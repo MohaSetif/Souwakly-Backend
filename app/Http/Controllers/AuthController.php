@@ -12,7 +12,8 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequest $request){
+    public function login(LoginRequest $request)
+    {
 
         $user = User::where('email', $request->email)->first();
 
@@ -32,7 +33,8 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function register(RegisterRequest $request){
+    public function register(RegisterRequest $request)
+    {
 
         $user = User::create([
             "name" => $request->name,
@@ -41,13 +43,17 @@ class AuthController extends Controller
             "device_name" => $request->device_name,
         ]);
 
+        // Assign default role (Affiliate) on registration
+        $user->assignRole('Affiliate');
+
         return response()->json([
             "message" => "Registration successful.",
             "token" => $user->createToken($request->device_name)->plainTextToken
         ], 201);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         if ($request->user()) {
             $request->user()->currentAccessToken()->delete();
 
@@ -57,7 +63,8 @@ class AuthController extends Controller
         return response()->json(['error' => 'You are not logged in.'], 401);
     }
 
-    public function verifyToken(Request $request){
+    public function verifyToken(Request $request)
+    {
         $user = $request->user();
 
         return response()->json([
