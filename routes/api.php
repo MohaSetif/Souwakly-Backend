@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AffiliateLinkController;
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\MerchantController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
 
+    // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/verify_token', [AuthController::class, 'verifyToken']);
 
@@ -49,4 +51,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/time-series', [AnalyticsController::class, 'timeBasedAnalytics']);
         Route::get('/merchant-report', [AnalyticsController::class, 'merchantAnalytics']);
     });
+
+    // Merchant
+    Route::get('/merchant/affiliates', [MerchantController::class, 'affiliates']);
 });
